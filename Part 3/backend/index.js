@@ -1,10 +1,9 @@
 const express = require('express')
-const cors = require('cors')
 
 const app = express()
 
-app.use(cors())
 app.use(express.json())
+app.use(express.static('dist'))
 
 let notes = [
   {
@@ -79,6 +78,11 @@ app.post('/api/notes', (request, response) => {
 
   response.json(note)
 })
+
+app.get('/', (request, response) => {
+  response.redirect('/index.html')
+}
+)
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
