@@ -5,6 +5,7 @@ express = require('express')
 const app = express()
 
 app.use(express.json())
+app.use(express.static('dist'))
 
 morgan.token('body', (req) => {
   return JSON.stringify(req.body);
@@ -74,6 +75,10 @@ app.post('/api/persons', (req, res) => {
     }
     persons = persons.concat(person)
     res.json(person)
+})
+
+app.get('/', (req, res) => {
+    res.redirect('/index.html')
 })
 
 PORT = process.env.PORT || 3001
