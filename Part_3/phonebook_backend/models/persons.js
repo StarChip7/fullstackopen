@@ -1,18 +1,19 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
 
 const url = process.env.MONGO_URI
 
 mongoose.set('strictQuery',false)
 
-mongoose.connect(url, {family: 4})
+mongoose.connect(url, { family: 4 })
 
 const personSchema = new mongoose.Schema({
-  name: {type: String, minlength: 3},
-  number: {type: String, minlength: 8, validate: {
+  name: { type: String, minlength: 3 },
+  number: { type: String, minlength: 8, validate: {
     validator: function(v) {
-      return /^\d{2,3}-\d+$/.test(v);
+      return /^\d{2,3}-\d+$/.test(v)
     }
-    }}
+  }
+  }
 })
 
 personSchema.set('toJSON', {

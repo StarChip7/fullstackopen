@@ -10,13 +10,19 @@
     "start": "node index.js",
     "dev": "node --watch index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint .",
     "build-render": "cd ../phonebook && npm install && npm run build && cp -r dist ../phonebook_backend/ && cd ../phonebook_backend && npm install"
   },
   "dependencies": {
-    "cors": "^2.8.6",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
     "mongoose": "^9.2.3",
     "morgan": "^1.10.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@stylistic/eslint-plugin": "^5.9.0",
+    "eslint": "^10.0.2",
+    "globals": "^17.3.0"
   }
 }

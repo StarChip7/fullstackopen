@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
 import personService from './services/persons'
 import Notification from './components/Notification'
 
@@ -141,7 +140,6 @@ const PersonForm = ({ addName, newName, setNewName, newNumber, setNewNumber }) =
 }
 
 const Person = (props) => {
-  console.log(props)
   return (
     <div>
       {props.name} {props.number}
