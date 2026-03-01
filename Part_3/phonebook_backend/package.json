@@ -10,11 +10,13 @@
     "start": "node index.js",
     "dev": "node --watch index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-render": "cd ../../Part_2/phonebook && npm install && npm run build && cp -r dist ../../Part_3/phonebook_backend/ && cd ../../Part_3/phonebook_backend && npm install"
+    "build-render": "cd ../phonebook && npm install && npm run build && cp -r dist ../phonebook_backend/ && cd ../phonebook_backend && npm install"
   },
   "dependencies": {
     "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
     "express": "^5.2.1",
+    "mongoose": "^9.2.3",
     "morgan": "^1.10.1"
   }
 }
