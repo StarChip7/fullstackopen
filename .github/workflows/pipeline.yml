@@ -8,13 +8,15 @@ on:
 jobs:
   simple_deployment_pipeline:    
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./Part_11/fs-pokedex-main
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6        
         with:          
           node-version: '24'
-      - name: change directory to Part 11 fs-pokedex-main
-        run: cd 'Part_11/fs-pokedex-main'
       - name: Install dependencies        
         run: npm install
       - name: Check style        
