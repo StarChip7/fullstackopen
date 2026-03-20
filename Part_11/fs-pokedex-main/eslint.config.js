@@ -32,7 +32,7 @@ module.exports = [
       'no-trailing-spaces': 'error',
       'object-curly-spacing': ['error', 'always'],
       'arrow-spacing': ['error', { 'before': true, 'after': true }],
-      'no-console': 0
+      'no-console': 'off'
     }
   },
   {
@@ -70,7 +70,7 @@ module.exports = [
       'no-trailing-spaces': 'error',
       'object-curly-spacing': ['error', 'always'],
       'arrow-spacing': ['error', { 'before': true, 'after': true }],
-      'no-console': 'error',
+      'no-console': 'off',
       'react/prop-types': 0
     }
   }
