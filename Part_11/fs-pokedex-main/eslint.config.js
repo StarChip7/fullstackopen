@@ -5,13 +5,20 @@ const globals = require('globals')
 
 module.exports = [
   {
+    env: {
+      node: true,
+      browser: true,
+      es6: true,
+    },
+  },
+  {
     ignores: [
       'webpack.config.js',
       'eslint.config.js',
       '.eslintrc.js',
       'node_modules/**',
-      'dist/**'
-    ]
+      'dist/**',
+    ],
   },
   js.configs.recommended,
   {
@@ -20,58 +27,58 @@ module.exports = [
       ecmaVersion: 2018,
       sourceType: 'commonjs',
       globals: {
-        ...globals.node
-      }
+        ...globals.node,
+      },
     },
     rules: {
-      'indent': ['error', 2],
+      indent: ['error', 2],
       'linebreak-style': ['error', 'unix'],
-      'quotes': ['error', 'single'],
-      'semi': ['error', 'never'],
-      'eqeqeq': 'error',
+      quotes: ['error', 'single'],
+      semi: ['error', 'never'],
+      eqeqeq: 'error',
       'no-trailing-spaces': 'error',
       'object-curly-spacing': ['error', 'always'],
-      'arrow-spacing': ['error', { 'before': true, 'after': true }],
-      'no-console': 'off'
-    }
+      'arrow-spacing': ['error', { before: true, after: true }],
+      'no-console': 'off',
+    },
   },
   {
     files: ['src/**/*.{js,jsx}', 'test/**/*.{js,jsx}'],
     plugins: {
       react,
-      jest
+      jest,
     },
     languageOptions: {
       ecmaVersion: 2018,
       sourceType: 'module',
       parserOptions: {
         ecmaFeatures: {
-          jsx: true
-        }
+          jsx: true,
+        },
       },
       globals: {
         ...globals.browser,
         ...globals.es6,
-        ...globals.jest
-      }
+        ...globals.jest,
+      },
     },
     settings: {
       react: {
-        version: 'detect'
-      }
+        version: 'detect',
+      },
     },
     rules: {
       ...react.configs.recommended.rules,
-      'indent': ['error', 2],
+      indent: ['error', 2],
       'linebreak-style': ['error', 'unix'],
-      'quotes': ['error', 'single'],
-      'semi': ['error', 'never'],
-      'eqeqeq': 'error',
+      quotes: ['error', 'single'],
+      semi: ['error', 'never'],
+      eqeqeq: 'error',
       'no-trailing-spaces': 'error',
       'object-curly-spacing': ['error', 'always'],
-      'arrow-spacing': ['error', { 'before': true, 'after': true }],
+      'arrow-spacing': ['error', { before: true, after: true }],
       'no-console': 'off',
-      'react/prop-types': 0
-    }
-  }
+      'react/prop-types': 0,
+    },
+  },
 ]
