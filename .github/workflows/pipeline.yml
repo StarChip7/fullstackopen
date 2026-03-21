@@ -23,5 +23,7 @@ jobs:
         run: npm run eslint
       - name: npm run test
         run: npm run test
+      - name: tests:e2e
+        run: npm run test:e2e
       - name: build
         run: npm run build
