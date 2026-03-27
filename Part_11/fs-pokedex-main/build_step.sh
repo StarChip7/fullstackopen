@@ -1,4 +1,4 @@
-<strong>#!/bin/bash</strong>
+#!/bin/bash
 
 echo "Build script"
 
