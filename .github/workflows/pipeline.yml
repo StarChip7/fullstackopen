@@ -53,29 +53,33 @@ jobs:
       - uses: sarisia/actions-status-discord@v1
         if: ${{  steps.skip_check.outputs.skip != 'true' && job.status == 'success'}}
         with:
+          nodetail: true
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           status: ${{ job.status }}
           content: "✅ NEW VERSION DEPLOYED SUCCESSFULLY"
           title: "Deployment details"
-          commit: ${{ github.sha }}
-          Message: ${{ github.event.head_commit.message }}
-          author: ${{ github.event.head_commit.author.name }}
+          description: |
+            commit: `${{ github.sha }}`
+            Message: `${{ github.event.head_commit.message }}`
+            author: `${{ github.event.head_commit.author.name }}`
           username: GitHub Actions
           color:  ${{ job.status }}' =='success' ? #008000 : ${{ job.status }} == 'failure' ? #FF0000 : #FFFF00
       - uses: sarisia/actions-status-discord@v1
         if: ${{  steps.skip_check.outputs.skip != 'true' && job.status == 'failure'}}
         with:
+          nodetail: true
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           status: ${{ job.status }}
           content: "✅ NEW VERSION DEPLOYED SUCCESSFULLY"
           title: "deploy"
-          Repository: ${{ github.repository }}
-          Branch: ${{ github.ref_name }}
-          commit: ${{ github.sha }}
-          Message: ${{ github.event.head_commit.message }}
-          author: ${{ github.event.head_commit.author.name }}
-          Workflow: ${{ github.workflow }}
-          Job: ${{ github.job }}
+          description: |
+            Repository: `${{ github.repository }}`
+            Branch: `${{ github.ref_name }}`
+            commit: `${{ github.sha }}`
+            Message: `${{ github.event.head_commit.message }}`
+            author: `${{ github.event.head_commit.author.name }}`
+            Workflow: `${{ github.workflow }}`
+            Job: `${{ github.job }}`
           username: GitHub Actions
           color:  ${{ job.status }}' =='success' ? #008000 : ${{ job.status }} == 'failure' ? #FF0000 : #FFFF00
   tag_release:
