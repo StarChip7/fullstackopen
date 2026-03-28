@@ -11,17 +11,21 @@ on:
 jobs:
   simple_deployment_pipeline:    
     runs-on: ubuntu-latest
-
     defaults:
       run:
         working-directory: ./Part_11/fs-pokedex-main
+    outputs:
+      skip: ${{ steps.skip_check.outputs.skip }}
     steps:
       - uses: actions/checkout@v6
-      - name: Print PR info
-        if: ${{ github.event_name != 'push' }}
+      - name: Check for #skip
+        id: skip_check
         run: |
-              echo "Title: ${{ github.event.pull_request.title }}"
-              echo "Body: ${{ github.event.pull_request.body }}"
+          if git log origin/${{ github.base_ref }}..HEAD --pretty=%B | grep -q "#skip"; then
+            echo "skip=true" >> $GITHUB_OUTPUT
+          else
+            echo "skip=false" >> $GITHUB_OUTPUT
+          fi
       - uses: actions/setup-node@v6        
         with:          
           node-version: '24'
@@ -44,7 +48,7 @@ jobs:
       - name: build
         run: npm run build
       - name: Trigger deployment
-        if: ${{ github.event_name == 'push' }}
+        if: ${{ github.event_name == 'push'  && steps.skip_check.outputs.skip != 'true'}}
         run: curl ${{ secrets.RENDER_DEPLOY_HOOK }}
   tag_release:
       needs: [simple_deployment_pipeline]
@@ -52,6 +56,7 @@ jobs:
       steps:
        - uses: actions/checkout@v6
        - name: Bump version and push tag
+         if: ${{ needs.check.outputs.skip != 'true' }}
          uses: anothrNick/github-tag-action@1.75.0
          env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
