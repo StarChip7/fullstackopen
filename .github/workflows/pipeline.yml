@@ -70,8 +70,8 @@ jobs:
           nodetail: true
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           status: ${{ job.status }}
-          content: "✅ NEW VERSION DEPLOYED SUCCESSFULLY"
-          title: "deploy"
+          content: "❌ Build Failed! The pipeline encountered an error"
+          title: "Failure details"
           description: |
             Repository: `${{ github.repository }}`
             Branch: `${{ github.ref_name }}`
@@ -80,6 +80,10 @@ jobs:
             author: `${{ github.event.head_commit.author.name }}`
             Workflow: `${{ github.workflow }}`
             Job: `${{ github.job }}`
+            `\\`
+            `\\`
+            `[View Commit](https://github.com/${{ github.repository }}/commit/${{ github.sha }})`
+            `[View Workflow Run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})`
           username: GitHub Actions
           color:  ${{ job.status }}' =='success' ? #008000 : ${{ job.status }} == 'failure' ? #FF0000 : #FFFF00
   tag_release:
