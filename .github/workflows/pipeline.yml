@@ -21,7 +21,7 @@ jobs:
       - name: Check for #skip
         id: skip_check
         run: |
-          if ${{ github.event_name != 'push'  && contains(join(github.event.commits.*.message, ' '), '#skip') }} ; then
+          if ${{ github.event_name != 'push'  || contains(join(github.event.commits.*.message, ' '), '#skip') }} ; then
             echo "skip=true" >> $GITHUB_OUTPUT
           else
             echo "skip=false" >> $GITHUB_OUTPUT
