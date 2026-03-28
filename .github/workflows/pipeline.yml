@@ -18,6 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: Print PR info
+        if: ${{ github.event_name != 'push' }}
         run: |
               echo "Title: ${{ github.event.pull_request.title }}"
               echo "Body: ${{ github.event.pull_request.body }}"
