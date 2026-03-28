@@ -21,7 +21,7 @@ jobs:
       - name: Check for #skip
         id: skip_check
         run: |
-          if git log origin/${{ github.base_ref }}..HEAD --pretty=%B | grep -q "#skip"; then
+          if !contains(join(github.event.commits.*.message, ' '), '#skip') ; then
             echo "skip=true" >> $GITHUB_OUTPUT
           else
             echo "skip=false" >> $GITHUB_OUTPUT
