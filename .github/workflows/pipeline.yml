@@ -16,11 +16,11 @@ jobs:
       run:
         working-directory: ./Part_11/fs-pokedex-main
     steps:
+      - uses: actions/checkout@v6
       - name: Print PR info
         run: |
               echo "Title: ${{ github.event.pull_request.title }}"
               echo "Body: ${{ github.event.pull_request.body }}"
-      - uses: actions/checkout@v6
       - uses: actions/setup-node@v6        
         with:          
           node-version: '24'
