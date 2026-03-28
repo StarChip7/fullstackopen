@@ -1,4 +1,4 @@
-name: Periodic Hello
+name: Periodic Health Check
 
 on:
   workflow_dispatch:
