@@ -114,6 +114,9 @@ app.get('/', (req, res) => {
   res.redirect('/index.html')
 })
 
+app.get('/health', (req, res) => {
+  res.send('ok')
+})
 
 const errorHandler = (error, req, res, next) => {
   res.status(500).send({ error: error.message })
