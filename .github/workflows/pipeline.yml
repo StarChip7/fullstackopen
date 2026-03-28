@@ -21,7 +21,7 @@ jobs:
       - name: Check for #skip
         id: skip_check
         run: |
-          if ${{ contains(join(github.event.commits.*.message, ' '), '#skip') }} ; then
+          if ${{ github.event_name != 'push'  && contains(join(github.event.commits.*.message, ' '), '#skip') }} ; then
             echo "skip=true" >> $GITHUB_OUTPUT
           else
             echo "skip=false" >> $GITHUB_OUTPUT
@@ -48,7 +48,7 @@ jobs:
       - name: build
         run: npm run build
       - name: Trigger deployment
-        if: ${{ github.event_name == 'push'  && steps.skip_check.outputs.skip != 'true'}}
+        if: ${{  steps.skip_check.outputs.skip != 'true'}}
         run: curl ${{ secrets.RENDER_DEPLOY_HOOK }}
   tag_release:
       needs: [simple_deployment_pipeline]
