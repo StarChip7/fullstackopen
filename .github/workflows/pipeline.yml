@@ -56,11 +56,11 @@ jobs:
       steps:
        - uses: actions/checkout@v6
        - uses: sarisia/actions-status-discord@v1
-         if: ${{  steps.skip_check.outputs.skip != 'true' && job.status == 'success'}}
+         if: ${{  steps.skip_check.outputs.skip != 'true' && needs.simple_deployment_pipeline.result == 'success'}}
          with:
           nodetail: true
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          status: ${{ job.status }}
+          status: ${{ needs.simple_deployment_pipeline.result }}
           content: "✅ NEW VERSION DEPLOYED SUCCESSFULLY"
           title: "Deployment details"
           description: |
@@ -68,7 +68,7 @@ jobs:
             Message: `${{ github.event.head_commit.message }}`
             author: `${{ github.event.head_commit.author.name }}`
           username: GitHub Actions
-          color:  ${{ job.status }}' =='success' ? #008000 : ${{ job.status }} == 'failure' ? #FF0000 : #FFFF00
+          color:  #008000
        - name: Bump version and push tag
          if: ${{ needs.simple_deployment_pipeline.outputs.skip != 'true' }}
          uses: anothrNick/github-tag-action@1.75.0
@@ -81,11 +81,11 @@ jobs:
       steps:
        - uses: actions/checkout@v6
        - uses: sarisia/actions-status-discord@v1
-         if: ${{  steps.skip_check.outputs.skip != 'true' && job.status == 'failure'}}
+         if: ${{  steps.skip_check.outputs.skip != 'true' &&  needs.simple_deployment_pipeline.result == 'failure'}}
          with:
           nodetail: true
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          status: ${{ job.status }}
+          status: ${{ needs.simple_deployment_pipeline.result }}
           content: "❌ Build Failed! The pipeline encountered an error"
           title: "Failure details"
           description: |
@@ -101,6 +101,4 @@ jobs:
             `[View Commit](https://github.com/${{ github.repository }}/commit/${{ github.sha }})`
             `[View Workflow Run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})`
           username: GitHub Actions
-          color:  ${{ job.status }}' =='success' ? #008000 : ${{ job.status }} == 'failure' ? #FF0000 : #FFFF00
-
-    
+          color:  #FF0000
