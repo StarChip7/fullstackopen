@@ -50,9 +50,14 @@ jobs:
       - name: Trigger deployment
         if: ${{  steps.skip_check.outputs.skip != 'true'}}
         run: curl ${{ secrets.RENDER_DEPLOY_HOOK }}
-      - uses: sarisia/actions-status-discord@v1
-        if: ${{  steps.skip_check.outputs.skip != 'true' && job.status == 'success'}}
-        with:
+  tag_release:
+      needs: [simple_deployment_pipeline]
+      runs-on: ubuntu-latest
+      steps:
+       - uses: actions/checkout@v6
+       - uses: sarisia/actions-status-discord@v1
+         if: ${{  steps.skip_check.outputs.skip != 'true' && job.status == 'success'}}
+         with:
           nodetail: true
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           status: ${{ job.status }}
@@ -64,9 +69,20 @@ jobs:
             author: `${{ github.event.head_commit.author.name }}`
           username: GitHub Actions
           color:  ${{ job.status }}' =='success' ? #008000 : ${{ job.status }} == 'failure' ? #FF0000 : #FFFF00
-      - uses: sarisia/actions-status-discord@v1
-        if: ${{  steps.skip_check.outputs.skip != 'true' && job.status == 'failure'}}
-        with:
+       - name: Bump version and push tag
+         if: ${{ needs.simple_deployment_pipeline.outputs.skip != 'true' }}
+         uses: anothrNick/github-tag-action@1.75.0
+         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: "patch"
+  notify_failure:
+      needs: [simple_deployment_pipeline]
+      runs-on: ubuntu-latest
+      steps:
+       - uses: actions/checkout@v6
+       - uses: sarisia/actions-status-discord@v1
+         if: ${{  steps.skip_check.outputs.skip != 'true' && job.status == 'failure'}}
+         with:
           nodetail: true
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           status: ${{ job.status }}
@@ -86,14 +102,5 @@ jobs:
             `[View Workflow Run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})`
           username: GitHub Actions
           color:  ${{ job.status }}' =='success' ? #008000 : ${{ job.status }} == 'failure' ? #FF0000 : #FFFF00
-  tag_release:
-      needs: [simple_deployment_pipeline]
-      runs-on: ubuntu-latest
-      steps:
-       - uses: actions/checkout@v6
-       - name: Bump version and push tag
-         if: ${{ needs.simple_deployment_pipeline.outputs.skip != 'true' }}
-         uses: anothrNick/github-tag-action@1.75.0
-         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DEFAULT_BUMP: "patch"
+
+    
