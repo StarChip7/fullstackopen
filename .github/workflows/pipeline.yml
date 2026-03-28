@@ -51,15 +51,33 @@ jobs:
         if: ${{  steps.skip_check.outputs.skip != 'true'}}
         run: curl ${{ secrets.RENDER_DEPLOY_HOOK }}
       - uses: sarisia/actions-status-discord@v1
-        if: ${{  steps.skip_check.outputs.skip != 'true'}}
+        if: ${{  steps.skip_check.outputs.skip != 'true' && job.status == 'success'}}
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           status: ${{ job.status }}
-          content: "Hey <@316911818725392384>"
-          title: "deploy"
-          description: "Build and deploy to Render"
+          content: "✅ NEW VERSION DEPLOYED SUCCESSFULLY"
+          title: "Deployment details"
+          commit: ${{ github.sha }}
+          Message: ${{ github.event.head_commit.message }}
+          author: ${{ github.event.head_commit.author.name }}
           username: GitHub Actions
-          color:  ${{ job.status }}' === 'success' ? #008000 : ${{ job.status }} === 'failure' ? #FF0000 : #FFFF00,
+          color:  ${{ job.status }}' =='success' ? #008000 : ${{ job.status }} == 'failure' ? #FF0000 : #FFFF00
+      - uses: sarisia/actions-status-discord@v1
+        if: ${{  steps.skip_check.outputs.skip != 'true' && job.status == 'failure'}}
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          status: ${{ job.status }}
+          content: "✅ NEW VERSION DEPLOYED SUCCESSFULLY"
+          title: "deploy"
+          Repository: ${{ github.repository }}
+          Branch: ${{ github.ref_name }}
+          commit: ${{ github.sha }}
+          Message: ${{ github.event.head_commit.message }}
+          author: ${{ github.event.head_commit.author.name }}
+          Workflow: ${{ github.workflow }}
+          Job: ${{ github.job }}
+          username: GitHub Actions
+          color:  ${{ job.status }}' =='success' ? #008000 : ${{ job.status }} == 'failure' ? #FF0000 : #FFFF00
   tag_release:
       needs: [simple_deployment_pipeline]
       runs-on: ubuntu-latest
