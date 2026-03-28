@@ -70,8 +70,8 @@ jobs:
           nodetail: true
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           status: ${{ job.status }}
-          content: "✅ NEW VERSION DEPLOYED SUCCESSFULLY"
-          title: "deploy"
+          content: "❌ Build Failed! The pipeline encountered an error"
+          title: "Failure details"
           description: |
             Repository: `${{ github.repository }}`
             Branch: `${{ github.ref_name }}`
