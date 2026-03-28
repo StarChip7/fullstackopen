@@ -21,7 +21,7 @@ jobs:
       - name: Check for #skip
         id: skip_check
         run: |
-          if !contains(join(github.event.commits.*.message, ' '), '#skip') ; then
+          if ${{ !contains(join(github.event.commits.*.message, ' '), '#skip') }} ; then
             echo "skip=true" >> $GITHUB_OUTPUT
           else
             echo "skip=false" >> $GITHUB_OUTPUT
@@ -56,7 +56,7 @@ jobs:
       steps:
        - uses: actions/checkout@v6
        - name: Bump version and push tag
-         if: ${{ needs.check.outputs.skip != 'true' }}
+         if: ${{ needs.simple_deployment_pipeline.outputs.skip != 'true' }}
          uses: anothrNick/github-tag-action@1.75.0
          env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
